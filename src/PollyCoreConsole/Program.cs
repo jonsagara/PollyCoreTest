@@ -27,13 +27,13 @@ try
         var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
         var httpClient = httpClientFactory.CreateClient(HttpClients.HttpStatus);
 
-        var requestUrl = "https://httpstat.us/503";
+        var requestUrl = "https://httpstat.us/500";
 
-        Log.Information($"Making HTTP request to {requestUrl}...");
+        Log.Information("Making HTTP request to {RequestUrl}...", requestUrl);
         using var requestMsg = new HttpRequestMessage(HttpMethod.Get, requestUrl);
         using var responseMsg = await httpClient.SendAsync(requestMsg);
 
-        Log.Information($"Status: {responseMsg.StatusCode}");
+        Log.Information("Status: {StatusCodeInt} {StatusCode}", (int)responseMsg.StatusCode, responseMsg.StatusCode);
         var responseBody = await responseMsg.Content.ReadAsStringAsync();
         Log.Information("Response body: {ResponseBody}", responseBody);
     }
