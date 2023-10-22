@@ -11,6 +11,7 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0-rc.2.23479.6" />
 		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.0.0-rc.2.23510.2" />
 		<PackageReference Include="Polly.Core" Version="8.0.0" />
+		<PackageReference Include="Sagara.Core" Version="2.0.0-rc5" />
 		<PackageReference Include="Sagara.Core.Logging.Serilog" Version="2.0.0-rc5" />
 		<PackageReference Include="Serilog" Version="3.0.1" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
