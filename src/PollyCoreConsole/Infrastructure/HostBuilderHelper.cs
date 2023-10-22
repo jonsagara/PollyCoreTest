@@ -30,6 +30,7 @@ public static class HostBuilderHelper
             .Enrich.WithProperty(LoggerEnrichmentProperties.Assembly, Assembly.GetExecutingAssembly().GetName().Name!)
             .Enrich.With<UtcTimestampEnricher>()
             .Enrich.WithMachineName()
+            .WriteTo.Console()
             .WriteTo.Logger(lc => lc
                 .WriteTo.File(logFilePathFormat, outputTemplate: "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{MachineName}] [{Level}] [{SourceContext:l}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 10)
                 );

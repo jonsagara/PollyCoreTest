@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PollyCoreConsole;
 using PollyCoreConsole.Infrastructure;
 using Serilog;
 
@@ -7,18 +9,34 @@ using Serilog;
 //   set up successfully.
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
-.CreateBootstrapLogger();
-
-var builder = Host.CreateApplicationBuilder(args);
-
-// Add services to the container.
-ApplicationStartup.ConfigureServices(builder);
+    .CreateBootstrapLogger();
 
 try
 {
+    var builder = Host.CreateApplicationBuilder(args);
+
+    // Add services to the container.
+    ApplicationStartup.ConfigureServices(builder);
+
     var app = builder.Build();
 
-    app.Run();
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var services = serviceScope.ServiceProvider;
+
+        var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
+        var httpClient = httpClientFactory.CreateClient(HttpClients.HttpStatus);
+
+        var requestUrl = "https://httpstat.us/504";
+
+        Log.Information($"Making HTTP request to {requestUrl}...");
+        using var requestMsg = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+        using var responseMsg = await httpClient.SendAsync(requestMsg);
+
+        Log.Information($"Status: {responseMsg.StatusCode}");
+        var responseBody = await responseMsg.Content.ReadAsStringAsync();
+        Log.Information("Response body: {ResponseBody}", responseBody);
+    }
 
     return 0;
 }
