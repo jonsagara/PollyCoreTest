@@ -34,7 +34,15 @@ public static class ApplicationStartup
                     BackoffType = DelayBackoffType.Exponential,
                     OnRetry = (args) =>
                     {
-                        _logger.Warning(args.Outcome.Exception, "Failed to send request with HttpClient '{HttpClientName}'. Retrying after {RetryDelay}...", HttpClients.HttpStatus, args.RetryDelay);
+                        _logger.Warning(args.Outcome.Exception, "[HttpClient={HttpClientName}] Failed to send request to {RequestUri}. StatusCode: {StatusCodeInt} {StatusCode}. The attempt took {Duration}. Retrying after {RetryDelay}...", 
+                            HttpClients.HttpStatus,
+                            args.Outcome.Result?.RequestMessage?.RequestUri,
+                            (int?)args.Outcome.Result?.StatusCode,
+                            args.Outcome.Result?.StatusCode,
+                            args.Duration, 
+                            args.RetryDelay
+                            );
+
                         return default;
                     }
                 });

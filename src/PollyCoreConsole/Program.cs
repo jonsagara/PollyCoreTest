@@ -27,7 +27,7 @@ try
         var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
         var httpClient = httpClientFactory.CreateClient(HttpClients.HttpStatus);
 
-        var requestUrl = "https://httpstat.us/504";
+        var requestUrl = "https://httpstat.us/503";
 
         Log.Information($"Making HTTP request to {requestUrl}...");
         using var requestMsg = new HttpRequestMessage(HttpMethod.Get, requestUrl);
