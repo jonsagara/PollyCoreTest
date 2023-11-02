@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PollyCoreConsole;
 using PollyCoreConsole.Infrastructure;
 using PollyCoreConsole.Services;
 using Serilog;
@@ -28,6 +27,10 @@ try
         // Retry demo
         //var retrySvc = services.GetRequiredService<RetryService>();
         //await retrySvc.RetryRequestDemoAsync("https://httpstat.us/500");
+
+        // Circuit Breaker demo.
+        var circuitBreakerSvc = services.GetRequiredService<CircuitBreakerService>();
+        await circuitBreakerSvc.CircuitBreakerDemoAsync("https://httpstat.us/500");
     }
 
     return 0;

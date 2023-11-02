@@ -18,10 +18,16 @@ public static class ApplicationStartup
         // Register HttpClients
         //
 
-        builder.Services.AddHttpClient(NamedHttpClients.HttpStatus.Name)
+        builder.Services.AddHttpClient(NamedHttpClients.HttpStatusRetry.Name)
             .AddResilienceHandler(
-                pipelineName: $"{NamedHttpClients.HttpStatus.Name} Pipeline",
-                pipelineBuilder => PollyHelper.ConfigureRetryAndWaitWithExponentialBackoffStrategy(pipelineBuilder, maxRetryAttempts: NamedHttpClients.HttpStatus.MaxRetryAttempts, httpClientName: NamedHttpClients.HttpStatus.Name)
+                pipelineName: $"{NamedHttpClients.HttpStatusRetry.Name} Pipeline",
+                pipelineBuilder => PollyHelper.ConfigureRetryAndWaitWithExponentialBackoffStrategy(pipelineBuilder, maxRetryAttempts: NamedHttpClients.HttpStatusRetry.MaxRetryAttempts, httpClientName: NamedHttpClients.HttpStatusRetry.Name)
+                );
+
+        builder.Services.AddHttpClient(NamedHttpClients.HttpStatusCircuitBreaker.Name)
+            .AddResilienceHandler(
+                pipelineName: $"{NamedHttpClients.HttpStatusCircuitBreaker.Name} Pipeline",
+                pipelineBuilder => PollyHelper.ConfigureCircuitBreakerStrategy(pipelineBuilder, httpClientName: NamedHttpClients.HttpStatusCircuitBreaker.Name)
                 );
 
 

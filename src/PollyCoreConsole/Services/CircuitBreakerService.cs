@@ -2,20 +2,20 @@
 
 namespace PollyCoreConsole.Services;
 
-public class RetryService : IPollyCoreConsoleService
+public class CircuitBreakerService : IPollyCoreConsoleService
 {
-    private static readonly ILogger _logger = Log.Logger.ForContext<RetryService>();
+    private static readonly ILogger _logger = Log.Logger.ForContext<CircuitBreakerService>();
 
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public RetryService(IHttpClientFactory httpClientFactory)
+    public CircuitBreakerService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task RetryRequestDemoAsync(string requestUrl)
+    public async Task CircuitBreakerDemoAsync(string requestUrl)
     {
-        var httpClient = _httpClientFactory.CreateClient(NamedHttpClients.HttpStatusRetry.Name);
+        var httpClient = _httpClientFactory.CreateClient(NamedHttpClients.HttpStatusCircuitBreaker.Name);
 
         _logger.Information("Making HTTP request to {RequestUrl}...", requestUrl);
         using var requestMsg = new HttpRequestMessage(HttpMethod.Get, requestUrl);
