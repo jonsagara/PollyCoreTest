@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using PollyCoreConsole;
 using PollyCoreConsole.Infrastructure;
+using PollyCoreConsole.Services;
 using Serilog;
 
 // The initial "bootstrap" logger is able to log errors during start-up. It's completely replaced by the
@@ -24,18 +25,9 @@ try
     {
         var services = serviceScope.ServiceProvider;
 
-        var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
-        var httpClient = httpClientFactory.CreateClient(NamedHttpClients.HttpStatus.Name);
-
-        var requestUrl = "https://httpstat.us/500";
-
-        Log.Information("Making HTTP request to {RequestUrl}...", requestUrl);
-        using var requestMsg = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-        using var responseMsg = await httpClient.SendAsync(requestMsg);
-
-        Log.Information("Status: {StatusCodeInt} {StatusCode}", (int)responseMsg.StatusCode, responseMsg.StatusCode);
-        var responseBody = await responseMsg.Content.ReadAsStringAsync();
-        Log.Information("Response body: {ResponseBody}", responseBody);
+        // Retry demo
+        //var retrySvc = services.GetRequiredService<RetryService>();
+        //await retrySvc.RetryRequestDemoAsync("https://httpstat.us/500");
     }
 
     return 0;

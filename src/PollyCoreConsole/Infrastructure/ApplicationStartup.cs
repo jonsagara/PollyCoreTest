@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http.Resilience;
+using PollyCoreConsole.Services;
 using Sagara.Core.Logging.Serilog;
 using Serilog;
 
@@ -17,13 +18,21 @@ public static class ApplicationStartup
         // Register HttpClients
         //
 
-        //builder.Services.AddHttpClient("Foo")
-        //    .AddTransientHttpErrorPolicy(PollyHelper.BuildWaitAndRetryPolicy);
-
         builder.Services.AddHttpClient(NamedHttpClients.HttpStatus.Name)
             .AddResilienceHandler(
                 pipelineName: $"{NamedHttpClients.HttpStatus.Name} Pipeline",
                 pipelineBuilder => PollyHelper.ConfigureRetryAndWaitWithExponentialBackoffStrategy(pipelineBuilder, maxRetryAttempts: NamedHttpClients.HttpStatus.MaxRetryAttempts, httpClientName: NamedHttpClients.HttpStatus.Name)
                 );
+
+
+        //
+        // Scan for services defined in this project.
+        //
+
+        builder.Services.Scan(scan => scan
+            .FromAssemblyOf<IPollyCoreConsoleService>()
+            .AddClasses(classes => classes.AssignableTo<IPollyCoreConsoleService>())
+            .AsSelf()
+            .WithScopedLifetime());
     }
 }
