@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace PollyCoreConsole.Services;
 
-namespace PollyCoreConsole.Services;
-internal interface IPollyCoreConsoleService
+/// <summary>
+/// Marker interface for DI.
+/// </summary>
+public interface IPollyCoreConsoleService
 {
 }

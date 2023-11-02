@@ -30,7 +30,7 @@ try
 
         // Circuit Breaker demo.
         var circuitBreakerSvc = services.GetRequiredService<CircuitBreakerService>();
-        await circuitBreakerSvc.CircuitBreakerDemoAsync("https://httpstat.us/500");
+        await circuitBreakerSvc.CircuitBreakerDemoAsync("https://localhost:44366/200");
     }
 
     return 0;
