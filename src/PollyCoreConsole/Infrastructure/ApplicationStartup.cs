@@ -26,14 +26,14 @@ public static class ApplicationStartup
 
         builder.Services.AddHttpClient(NamedHttpClients.HttpStatusCircuitBreaker.Name)
             .AddResilienceHandler(
-                pipelineName: $"Pipeline",
+                pipelineName: "httpstat.us Pipeline",
                 pipelineBuilder => PollyHelper.ConfigureCircuitBreakerStrategy(
                     pipelineBuilder,
-                    failureRatio: 0.2,
-                    minimumThroughput: 10,
-                    samplingDuration: TimeSpan.FromSeconds(60.0),
-                    breakDuration: TimeSpan.FromSeconds(5.0),
-                    httpClientName: NamedHttpClients.HttpStatusCircuitBreaker.Name
+                    httpClientName: NamedHttpClients.HttpStatusCircuitBreaker.Name,
+                    failureRatio: NamedHttpClients.HttpStatusCircuitBreaker.FailureRatio,
+                    minimumThroughput: NamedHttpClients.HttpStatusCircuitBreaker.MinimumThroughput,
+                    samplingDuration: NamedHttpClients.HttpStatusCircuitBreaker.SamplingDuration,
+                    breakDuration: NamedHttpClients.HttpStatusCircuitBreaker.BreakDuration
                     )
                 );
 

@@ -37,9 +37,11 @@ public static class PollyHelper
         });
     }
 
-    public static void ConfigureCircuitBreakerStrategy(ResiliencePipelineBuilder<HttpResponseMessage> pipelineBuilder, double failureRatio, int minimumThroughput, TimeSpan samplingDuration, TimeSpan breakDuration, string? httpClientName)
+    public static void ConfigureCircuitBreakerStrategy(ResiliencePipelineBuilder<HttpResponseMessage> pipelineBuilder, string httpClientName, double failureRatio, int minimumThroughput, TimeSpan samplingDuration, TimeSpan breakDuration)
     {
         Check.NotNull(pipelineBuilder);
+        Check.NotEmpty(httpClientName);
+        Check.NotOutOfRange(failureRatio, rangeLo: 0.0, rangeHi: 1.0);
         Check.NotOutOfRange(minimumThroughput, rangeLo: 1, rangeHi: int.MaxValue);
 
         pipelineBuilder.AddCircuitBreaker(new CircuitBreakerStrategyOptions<HttpResponseMessage>
