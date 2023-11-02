@@ -25,7 +25,7 @@ try
         var services = serviceScope.ServiceProvider;
 
         var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
-        var httpClient = httpClientFactory.CreateClient(HttpClients.HttpStatus);
+        var httpClient = httpClientFactory.CreateClient(NamedHttpClients.HttpStatus.Name);
 
         var requestUrl = "https://httpstat.us/500";
 

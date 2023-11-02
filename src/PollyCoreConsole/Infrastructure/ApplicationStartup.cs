@@ -20,10 +20,10 @@ public static class ApplicationStartup
         //builder.Services.AddHttpClient("Foo")
         //    .AddTransientHttpErrorPolicy(PollyHelper.BuildWaitAndRetryPolicy);
 
-        builder.Services.AddHttpClient(HttpClients.HttpStatus)
+        builder.Services.AddHttpClient(NamedHttpClients.HttpStatus.Name)
             .AddResilienceHandler(
-                pipelineName: $"{HttpClients.HttpStatus} Pipeline",
-                pipelineBuilder => PollyHelper.ConfigureRetryAndWaitWithExponentialBackoffStrategy(pipelineBuilder, maxRetryAttempts: 3, httpClientName: HttpClients.HttpStatus)
+                pipelineName: $"{NamedHttpClients.HttpStatus.Name} Pipeline",
+                pipelineBuilder => PollyHelper.ConfigureRetryAndWaitWithExponentialBackoffStrategy(pipelineBuilder, maxRetryAttempts: NamedHttpClients.HttpStatus.MaxRetryAttempts, httpClientName: NamedHttpClients.HttpStatus.Name)
                 );
     }
 }
