@@ -18,7 +18,7 @@ public static class PollyHelper
 
         pipelineBuilder.AddRetry(new RetryStrategyOptions<HttpResponseMessage>()
         {
-            ShouldHandle = args => ValueTask.FromResult(HttpClientResiliencePredicates.IsTransientHttpOutcome(args.Outcome)),
+            ShouldHandle = args => ValueTask.FromResult(HttpClientResiliencePredicates.IsTransient(args.Outcome)),
             MaxRetryAttempts = maxRetryAttempts,
             BackoffType = DelayBackoffType.Exponential,
             OnRetry = args =>
@@ -47,7 +47,7 @@ public static class PollyHelper
         pipelineBuilder.AddCircuitBreaker(new CircuitBreakerStrategyOptions<HttpResponseMessage>
         {
             // Specifies which results and exceptions are managed by the circuit breaker strategy. In this case, transient HTTP errors.
-            ShouldHandle = args => ValueTask.FromResult(HttpClientResiliencePredicates.IsTransientHttpOutcome(args.Outcome)),
+            ShouldHandle = args => ValueTask.FromResult(HttpClientResiliencePredicates.IsTransient(args.Outcome)),
 
             // The ratio of failures to successes that will cause the circuit to break/open.
             // Ex: 0.1 means if > 10% of requests fail within the sampling duration window, assuming the minimum throughput is satisfied,
