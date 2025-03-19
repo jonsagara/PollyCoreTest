@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http.Resilience;
 using PollyCoreConsole.Services;
 using Sagara.Core.Logging.Serilog;
 using Serilog;

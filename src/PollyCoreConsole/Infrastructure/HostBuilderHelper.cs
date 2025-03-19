@@ -28,7 +28,6 @@ public static class HostBuilderHelper
             .ReadFrom.Configuration(builder.Configuration)
             .ReadFrom.Services(services)
             .Enrich.WithProperty(LoggerEnrichmentProperties.Assembly, Assembly.GetExecutingAssembly().GetName().Name!)
-            .Enrich.With<UtcTimestampEnricher>()
             .Enrich.WithMachineName()
             .WriteTo.Console()
             .WriteTo.Logger(lc => lc
